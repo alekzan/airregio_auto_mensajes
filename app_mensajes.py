@@ -1,27 +1,24 @@
-import os
 import streamlit as st
 import pandas as pd
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
-from dotenv import load_dotenv
 
-# Importar las funciones desde airregio_mensajes_utilities.py
+# Import functions from airregio_mensajes_utilities.py
 from airregio_mensajes_utilities import generar_oferta, generar_mensaje
 
-# Cargar variables de entorno desde el archivo .env
-load_dotenv(override=True)
+# Access environment variables from Streamlit Secrets
+google_sheets_url = st.secrets["GOOGLE_SHEETS_URL_MESSAGES"]
 
-# Acceder a las variables de entorno
-google_sheets_url = os.getenv("GOOGLE_SHEETS_URL_MESSAGES")
-service_account_file = os.getenv("SERVICE_ACCOUNT_FILE")
+# Load the service account info directly from Streamlit secrets
+service_account_info = st.secrets["SERVICE_ACCOUNT_FILE"]
 
-# Autenticar y acceder a Google Sheets
+# Authenticate and access Google Sheets
 scope = [
     "https://spreadsheets.google.com/feeds",
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive",
 ]
-creds = ServiceAccountCredentials.from_json_keyfile_name(service_account_file, scope)
+creds = ServiceAccountCredentials.from_json_keyfile_dict(service_account_info, scope)
 client = gspread.authorize(creds)
 
 
