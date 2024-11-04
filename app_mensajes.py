@@ -1,3 +1,4 @@
+import json
 import streamlit as st
 import pandas as pd
 import gspread
@@ -9,15 +10,17 @@ from airregio_mensajes_utilities import generar_oferta, generar_mensaje
 # Access environment variables from Streamlit Secrets
 google_sheets_url = st.secrets["GOOGLE_SHEETS_URL_MESSAGES"]
 
-# Load the service account info directly from Streamlit secrets
-service_account_info = st.secrets["SERVICE_ACCOUNT_FILE"]
+# Parse the JSON credentials from Streamlit secrets
+service_account_info = json.loads(st.secrets["SERVICE_ACCOUNT_FILE"])
 
-# Authenticate and access Google Sheets
+# Define the scope for Google Sheets
 scope = [
     "https://spreadsheets.google.com/feeds",
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive",
 ]
+
+# Authenticate with Google Sheets using parsed JSON credentials
 creds = ServiceAccountCredentials.from_json_keyfile_dict(service_account_info, scope)
 client = gspread.authorize(creds)
 
