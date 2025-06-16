@@ -3,7 +3,6 @@ os.environ["LANGCHAIN_HANDLER"] = "pydantic_v1"
 from dotenv import load_dotenv
 from langchain_groq import ChatGroq
 from langchain_openai import ChatOpenAI
-ChatOpenAI.model_rebuild()
 
 from langchain_core.messages import HumanMessage, SystemMessage
 

@@ -1,8 +1,12 @@
+import os
+# must come before any langchain imports!
+os.environ["LANGCHAIN_HANDLER"] = "pydantic_v1"
 import json
 import streamlit as st
 import pandas as pd
 import gspread
-from oauth2client.service_account import ServiceAccountCredentials
+from google.oauth2.service_account import Credentials
+
 
 # Import functions from airregio_mensajes_utilities.py
 from airregio_mensajes_utilities import generar_oferta, generar_mensaje
@@ -20,8 +24,8 @@ scope = [
     "https://www.googleapis.com/auth/drive",
 ]
 
-# Authenticate with Google Sheets using parsed JSON credentials
-creds = ServiceAccountCredentials.from_json_keyfile_dict(service_account_info, scope)
+# after parsing `service_account_info` and defining `scope`
+creds = Credentials.from_service_account_info(service_account_info, scopes=scope)
 client = gspread.authorize(creds)
 
 
