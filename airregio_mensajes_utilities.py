@@ -1,28 +1,24 @@
-# 1) Very first lines of the file
 import os
-# force pydantic v1 behavior in LangChain
 os.environ["LANGCHAIN_HANDLER"] = "pydantic_v1"
 
 from dotenv import load_dotenv
 load_dotenv(override=True)
-
-# only set env vars if they exist
-if (xo := os.getenv("OPENAI_API_KEY")):
-    os.environ["OPENAI_API_KEY"] = xo
-if (xg := os.getenv("GROQ_API_KEY")):
-    os.environ["GROQ_API_KEY"] = xg
-
-# 2) Now import your LLM class and rebuild it
+from langchain_groq import ChatGroq
 from langchain_openai import ChatOpenAI
-ChatOpenAI.model_rebuild()
 
 from langchain_core.messages import HumanMessage, SystemMessage
 
-# 3) Remove any top-level `llm = ChatOpenAI(...)` here.
-#    Instead, lazy-instantiate inside a helper:
+#load_dotenv(override=True)
 
-def _get_llm():
-    return ChatOpenAI(model="gpt-4o-mini", temperature=0.2)
+os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
+
+os.environ["GROQ_API_KEY"] = os.getenv("GROQ_API_KEY")
+
+llama_3_2 = "llama-3.2-90b-vision-preview"
+llama_3_1 = "llama-3.3-70b-versatile"
+gpt = "gpt-4o-mini"
+llm = ChatOpenAI(model=gpt, temperature=0.2)
+# llm = ChatGroq(model=llama_3_1, temperature=0.2)
 
 
 def generar_oferta(
