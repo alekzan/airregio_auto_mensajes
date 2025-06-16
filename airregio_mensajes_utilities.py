@@ -1,12 +1,14 @@
 import os
 os.environ["LANGCHAIN_HANDLER"] = "pydantic_v1"
+
 from dotenv import load_dotenv
+load_dotenv(override=True)
 from langchain_groq import ChatGroq
 from langchain_openai import ChatOpenAI
 
 from langchain_core.messages import HumanMessage, SystemMessage
 
-load_dotenv(override=True)
+#load_dotenv(override=True)
 
 os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
 
